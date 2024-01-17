@@ -12,7 +12,7 @@ const __dirname = path.resolve();
 const upload = multer({
   storage: multer.diskStorage({ // 저장한공간 정보 : 하드디스크에 저장
       destination(req, file, cb) { // 저장 위치
-          cb(null, path.join(__dirname, "public/uploads/profile")); 
+          cb(null, path.join(__dirname, "/uploads/profile")); 
       },
       filename: (req, file, cb) => {	// timestamp를 이용해 새로운 파일명 설정
         let num = file.originalname.lastIndexOf(".");   
@@ -35,6 +35,7 @@ router.post('/', upload.single('attachment'), (req, res) => {
   }
   
   const imagePath = req.file.path 
+  console.log(imagePath,"image path")
   // 여기서 imagePath를 이용해 이미지를 저장하거나 다른 작업을 수행할 수 있습니다.
   return res.json({ success: true, imagePath: imagePath.split('profile\\')[1] });
 });

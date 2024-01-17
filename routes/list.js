@@ -52,4 +52,4 @@ router.get('/profile/:name', (req, res) => {
   } 
 })
 
-export default router
+export default router;

@@ -12,7 +12,7 @@ const __dirname = path.resolve();
 const upload = multer({
   storage: multer.diskStorage({ // 저장한공간 정보 : 하드디스크에 저장
       destination(req, file, cb) { // 저장 위치
-          cb(null, path.join(__dirname, "public/uploads/profile")); 
+          cb(null, path.join(__dirname, "/public/uploads/profile")); 
       },
       filename: (req, file, cb) => {	// timestamp를 이용해 새로운 파일명 설정
         let num = file.originalname.lastIndexOf(".");   

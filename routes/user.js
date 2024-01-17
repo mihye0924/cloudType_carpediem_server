@@ -57,15 +57,15 @@ router.post('/login', (req, res) => {
 });
    
 // 아이디 중복찾기
-router.get('/idCheck', (req, res) => {   
-  const {user_id} = req.body;   
+router.get('/:id', (req, res) => {   
+  const user_id = req.params.id;   
 
   try {
     pool.getConnection(function(err, conn){
       if(err) throw err;
       conn.query(sql.findId, [user_id], function(error, results) {
         if(error) throw error;  
-        console.log(results.length)  
+        console.log(results.length, results)  
         if(results.length < 1){
           return res.send({ code: 200, message: 'jogin id check successfully'})
         }else{

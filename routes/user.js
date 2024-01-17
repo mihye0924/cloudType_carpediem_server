@@ -4,7 +4,7 @@ import express from 'express';
 import mysql from 'mysql2';
 import { connection } from  '../lib/db.js'; 
 import bcrypt from 'bcryptjs';  
-import { generateAccessToken, generateRefreshToken } from '../middleware/token/CreateToken.js';
+import { generateAccessToken, generateRefreshToken } from '../middleware/token/createtoken.js';
 import {sql} from '../lib/sql.js';
 import logger from '../middleware/config/logger.js';
 

@@ -86,7 +86,7 @@ router.post('/join', (req, res) => {
   // 비밀번호 암호화하기
   const salt = bcrypt.genSaltSync(10);
   const hashPassword = bcrypt.hashSync(user_pw, salt);
-  const values = [null, user_id, hashPassword, user_name, user_birth, user_phone, user_email, role];
+  const values = [user_id, hashPassword, user_name, user_birth, user_phone, user_email, role];
   try {
     pool.getConnection(function (err, conn) {
       if (err) throw err;

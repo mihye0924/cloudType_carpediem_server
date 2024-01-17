@@ -12,7 +12,7 @@ const router = express.Router();
 const upload = multer({
   storage: multer.diskStorage({ // 저장한공간 정보 : 하드디스크에 저장
       destination(req, file, cb) { // 저장 위치
-          cb(null, '../cloudType_carpediem_client/public/assets/uploads/profile'); // uploads라는 폴더 안에 저장
+          cb(null, `${process.env.CLIENT_URL}/public/assets/uploads/profile`); // uploads라는 폴더 안에 저장
       },
       filename: (req, file, cb) => {	// timestamp를 이용해 새로운 파일명 설정
         let num = file.originalname.lastIndexOf(".");   

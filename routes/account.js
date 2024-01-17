@@ -32,9 +32,8 @@ router.get('/:id',  (req, res) => {
 })
 
 // 계정 닉네임 체크
-router.get('/accountNameCheck/:name', (req, res) => {  
+router.get(':name', (req, res) => {  
   const values = [req.params.name];
-  console.log(values,"va")
   try{
     pool.getConnection(function(err, conn){
       if(err) throw err;
@@ -55,7 +54,7 @@ router.get('/accountNameCheck/:name', (req, res) => {
 })
  
 // 계정생성
-router.post('/accountCreate',  (req, res) => {   
+router.post('/create',  (req, res) => {   
   const { user_id, account_name, account_profile } = req.body;  
   const values = [user_id, account_name, account_profile]
   try {
@@ -77,7 +76,7 @@ router.post('/accountCreate',  (req, res) => {
 })
 
 // 계정 삭제
-router.delete('/accountDelete', (req, res) => { 
+router.delete('/delete', (req, res) => { 
   const { user_id, account_name } = req.headers  
  
   try {

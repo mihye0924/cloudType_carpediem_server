@@ -1,10 +1,10 @@
 import Dotenv from 'dotenv';
 Dotenv.config();
-import express from 'express';   
-
+import express from 'express';    
 import multer from 'multer';
-const router = express.Router();
-  
+import path from 'path'; 
+const router = express.Router();  
+const __dirname = path.resolve(); 
 
 // 파일을 업로드할 폴더를 미리 만들기,
 // 또는 아래와 같이 dest 옵션으로 폴더 생성 
@@ -12,7 +12,7 @@ const router = express.Router();
 const upload = multer({
   storage: multer.diskStorage({ // 저장한공간 정보 : 하드디스크에 저장
       destination(req, file, cb) { // 저장 위치
-          cb(null, `${process.env.CLIENT_URL}/public/assets/uploads/profile`); // uploads라는 폴더 안에 저장
+          cb(null, path.join(__dirname, "public/uploads/profile")); 
       },
       filename: (req, file, cb) => {	// timestamp를 이용해 새로운 파일명 설정
         let num = file.originalname.lastIndexOf(".");   

@@ -22,7 +22,7 @@ app.use(cors({
     credentials: true, // 크로스 도메인 허용 
 }));  
 app.use(bodyParser.json({ limit:'50mb' }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'))); 
 
 
 // middleware 경로

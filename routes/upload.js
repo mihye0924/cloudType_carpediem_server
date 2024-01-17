@@ -33,7 +33,7 @@ router.post('/', upload.single('attachment'), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: '이미지를 업로드해주세요.' });
   }
-  
+  console.log( req,"req")
   const imagePath = req.file.path.split('profile\\')[1];
   console.log({ success: true, imagePath: imagePath })   
   return res.send({ success: true, imagePath: imagePath });

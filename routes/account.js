@@ -32,14 +32,14 @@ router.get('/:id',  (req, res) => {
 })
 
 // 계정 닉네임 체크
-router.get(':name', (req, res) => {  
-  const values = [req.params.name];
+router.get('/checkName/:name', (req, res) => {    
+  const user_name = req.params.name;    
   try{
     pool.getConnection(function(err, conn){
       if(err) throw err;
-      conn.query(sql.accountNameCheck, values, function(error, results) {
+      conn.query(sql.accountNameCheck, [user_name], function(error, results) {
+        
         if(error) throw error;      
-        console.log(results.length,"results")
         if(results.length < 1) {
           return res.send({ code: 200, message: 'Name Check is Successfully' });
         }else{

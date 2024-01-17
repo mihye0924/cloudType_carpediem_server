@@ -23,7 +23,7 @@ app.use(cors({
 }));  
 app.use(bodyParser.json({ limit:'50mb' }));
 app.use(express.static(path.join(__dirname, 'public'))); 
-
+console.log(__dirname,"경로확인")
 
 // middleware 경로
 app.use('/', index);

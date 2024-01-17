@@ -35,6 +35,6 @@ router.post('/', upload.single('attachment'), (req, res) => {
   }
   
   const imagePath = req.file.path.split('profile\\')[1]    
-  return res.json({ success: true, imagePath: imagePath });
+  return res.send({ success: true, imagePath: imagePath });
 }); 
 export default router

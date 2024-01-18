@@ -14,6 +14,7 @@ const pool = mysql.createPool(connection);
 // 로그인
 router.post('/login', (req, res) => {    
   const {user_id, user_pw} = req.body;  
+  console.log(user_id, user_pw, "로그인테스트222")
 
   const user = { 
     isAuth: true,

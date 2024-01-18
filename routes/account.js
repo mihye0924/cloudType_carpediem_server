@@ -15,7 +15,7 @@ const pool = mysql.createPool(connection);
 const upload = multer({
   storage: multer.diskStorage({ 
       destination(req, file, cb) { // 저장 위치
-          cb(null, path.join(__dirname, "public/uploads/profile")); 
+          cb(null, path.join(__dirname, "/uploads/profile")); 
       },
       filename: (req, file, cb) => {	
         cb(null, file.originalname)

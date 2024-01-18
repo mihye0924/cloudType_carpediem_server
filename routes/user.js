@@ -25,7 +25,7 @@ router.post('/login', (req, res) => {
       if(err) throw err;
       conn.query(sql.login, [user_id], function(error, results) { 
         if(error) throw error;    
-         
+         console.log(user_id, user_pw, results,"로그인테스트")
         if(results.length > 0 && results[0].user_id) {  
           const pwCheck = bcrypt.compareSync(user_pw, results[0].user_pw);  
           if(pwCheck){  
@@ -56,7 +56,7 @@ router.post('/login', (req, res) => {
   } 
 });
    
-// 아이디 중복찾기
+// 회원가입 중복찾기
 router.get('/:id', (req, res) => {   
   const user_id = req.params.id;   
 
@@ -64,8 +64,7 @@ router.get('/:id', (req, res) => {
     pool.getConnection(function(err, conn){
       if(err) throw err;
       conn.query(sql.findId, [user_id], function(error, results) {
-        if(error) throw error;  
-        console.log(results.length, results)  
+        if(error) throw error;    
         if(results.length < 1){
           return res.send({ code: 200, message: 'jogin id check successfully'})
         }else{

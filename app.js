@@ -5,8 +5,7 @@ import cors from 'cors';
 import express from 'express';  
 import bodyParser from 'body-parser'; 
 import cookieParser from 'cookie-parser'; 
-import auth from './middleware/token/auth.js';  
-import upload from './routes/upload.js';   
+import auth from './middleware/token/auth.js';    
 import user from './routes/user.js';        
 import list from './routes/list.js';   
 import account from './routes/account.js';  
@@ -22,13 +21,11 @@ app.use(cors({
     credentials: true, // 크로스 도메인 허용 
 }));  
 app.use(bodyParser.json({ limit:'50mb' }));
-app.use(express.static(path.join(__dirname, 'public'))); 
-console.log(__dirname,"경로확인")
+app.use(express.static(path.join(__dirname, '/public')));  
 
 // middleware 경로
 app.use('/', index);
-app.use('/auth', auth);  
-app.use('/upload', upload);  
+app.use('/auth', auth);   
  
 // post, get, put, delete 경로
 app.use('/user', user);   

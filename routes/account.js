@@ -99,8 +99,8 @@ router.post('/create',  (req, res) => {
 
 // 계정 - 삭제
 router.delete('/delete', (req, res) => { 
-  const { user_id, account_name } = req.headers;
-  console.log(user_id,account_name,"fdsfd")
+  const { user_id, account_name } = req.body;
+  console.log(user_id,account_name,"계정삭제")
  
   try {
     pool.getConnection(function (err, conn) {

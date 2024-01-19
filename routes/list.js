@@ -6,7 +6,7 @@ import mysql from 'mysql2';
 import { connection } from  '../lib/db.js';
 import { sql } from  '../lib/sql.js';
 import multer from 'multer';
-import logger from '../middleware/config/logger.js';
+import logger from '../middleware/config/logger.js'; 
  
 const __dirname = path.resolve(); 
 const router = express.Router();
@@ -40,16 +40,25 @@ router.post('/upload', upload.array('list'), (req, res) => {
 });  
 
 // 내 정보 - 리스트
-router.get('/:name', (req, res, next) => { 
+router.get('/:name', (req, res) => { 
   const account_name = req.params.name;    
+  const data = []
   try {
     pool.getConnection(function (err, conn) {
       if(err) throw err;
       conn.query(sql.listData, [account_name], function (error, results) { 
         if (error) throw error;
-        if (results.length > 0) {
-          next();
-          return res.send({ code: 200, result: results, message: 'List Profile is successfully' });
+        if (results.length > 0) { 
+
+          results.forEach((item) => {
+            data.push({
+              ...item,
+              list_image: JSON.stringify(item.list_image)
+            })
+          })
+          console.log(data,"data")
+
+          return res.send({ code: 200, result: data, message: 'List Profile is successfully' });
         } else {
           return res.send({ code: 401, message: 'List Profile is failed' });
         }
@@ -63,15 +72,14 @@ router.get('/:name', (req, res, next) => {
  
 
 // 내 정보 - 사진, 이름, 소개, 링크 등등
-router.get('/profile/:name', (req, res, next) => { 
+router.get('/profile/:name', (req, res) => { 
   const account_name = req.params.name;    
   try {
     pool.getConnection(function (err, conn) {
       if(err) throw err;
       conn.query(sql.listProfile, [account_name], function (error, results){ 
         if(error) throw error;       
-        if(results.length > 0){ 
-          next()
+        if(results.length > 0){  
           return res.send({ code: 200, result: results, message: 'List Profile is successfully'})
         }else{
           return res.send({ code: 401, message: 'List Profile is failed'})
@@ -93,7 +101,6 @@ router.post('/create', (req, res) => {
     pool.getConnection(function (err, conn) {
       if(err) throw err;
       conn.query(sql.listCreate, values, function (error, results){ 
-        // console.log(results,"rer") 
         if(error) throw error;     
         if(results){ 
           return res.send({ code: 200, result: results, message: 'List Write is successfully'})

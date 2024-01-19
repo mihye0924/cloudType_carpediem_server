@@ -48,15 +48,7 @@ router.get('/:name', (req, res) => {
       if(err) throw err;
       conn.query(sql.listData, [account_name], function (error, results) { 
         if (error) throw error;
-        if (results.length > 0) {   
-          
-          // results.forEach(( item ) => {    
-          // return data.push({
-          //     ...item,
-          //     list_image: JSON.stringify(item.list_image)
-          //   });
-          // })    
-          // console.log(data,"results")
+        if (results.length > 0) {    
           return res.send({ code: 200, result: results, message: 'List Profile is successfully' });
         } else {
           return res.send({ code: 401, message: 'List Profile is failed' });

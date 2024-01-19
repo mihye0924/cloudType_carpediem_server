@@ -45,12 +45,11 @@ router.get('/:name', (req, res, next) => {
   try {
     pool.getConnection(function (err, conn) {
       if(err) throw err;
-      conn.query(sql.listData, [account_name], function (error, results) {
-        console.log(results, "results");
+      conn.query(sql.listData, [account_name], function (error, results) { 
         if (error) throw error;
         if (results.length > 0) {
           next();
-          return res.send({ code: 200, result: results, message: 'List Profile is successfully' });
+          return res.send({ code: 200, result: JSON.stringify(results), message: 'List Profile is successfully' });
         } else {
           return res.send({ code: 401, message: 'List Profile is failed' });
         }

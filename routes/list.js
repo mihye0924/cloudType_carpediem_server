@@ -25,8 +25,7 @@ const upload = multer({
 });
 
 // 내 정보 - 이미지 업로드
-router.post('/upload', upload.array('list'), (req, res) => {
-  // console.log(req,"req")
+router.post('/upload', upload.array('list'), (req, res) => { 
   if (!req.files) {
     return res.status(400).json({ error: '이미지를 업로드해주세요.' });
   }  

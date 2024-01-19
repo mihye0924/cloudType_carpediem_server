@@ -49,7 +49,7 @@ router.get('/:name', (req, res, next) => {
         if (error) throw error;
         if (results.length > 0) {
           next();
-          return res.send({ code: 200, result: JSON.stringify(results), message: 'List Profile is successfully' });
+          return res.send({ code: 200, result: results, message: 'List Profile is successfully' });
         } else {
           return res.send({ code: 401, message: 'List Profile is failed' });
         }

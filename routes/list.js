@@ -45,14 +45,14 @@ router.get('/:name', (req, res, next) => {
   try {
     pool.getConnection(function (err, conn) {
       if(err) throw err;
-      conn.query(sql.listData, [account_name], function (error, results){ 
-        console.log(results,"results")
-        if(error) throw error;       
-        if(results.length > 0){ 
-          next()
-          return res.send({ code: 200, result: results, message: 'List Profile is successfully'})
-        }else{
-          return res.send({ code: 401, message: 'List Profile is failed'})
+      conn.query(sql.listData, [account_name], function (error, results) {
+        console.log(results, "results");
+        if (error) throw error;
+        if (results.length > 0) {
+          next();
+          return res.send({ code: 200, result: results, message: 'List Profile is successfully' });
+        } else {
+          return res.send({ code: 401, message: 'List Profile is failed' });
         }
       })
     })
@@ -94,7 +94,7 @@ router.post('/create', (req, res) => {
     pool.getConnection(function (err, conn) {
       if(err) throw err;
       conn.query(sql.listCreate, values, function (error, results){ 
-        console.log(results,"rer") 
+        // console.log(results,"rer") 
         if(error) throw error;     
         if(results){ 
           return res.send({ code: 200, result: results, message: 'List Write is successfully'})

@@ -44,10 +44,12 @@ router.post('/upload', upload.array('list'), (req, res) => {
 // 내 정보 - 리스트
 router.get('/:name', (req, res) => { 
   const account_name = req.params.name;    
+  console.log(account_name,"account_name")
   try {
     pool.getConnection(function (err, conn) {
       if(err) throw err;
       conn.query(sql.listData, [account_name], function (error, results){ 
+        console.log(results,"results")
         if(error) throw error;       
         if(results.length > 0){ 
           return res.send({ code: 200, result: results, message: 'List Profile is successfully'})
@@ -70,7 +72,6 @@ router.get('/profile/:name', (req, res) => {
     pool.getConnection(function (err, conn) {
       if(err) throw err;
       conn.query(sql.listProfile, [account_name], function (error, results){ 
-        console.log(results,"results")
         if(error) throw error;       
         if(results.length > 0){ 
           return res.send({ code: 200, result: results, message: 'List Profile is successfully'})

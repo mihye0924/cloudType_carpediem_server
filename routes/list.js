@@ -27,7 +27,7 @@ const upload = multer({
 // 내 정보 - 이미지 업로드
 router.post('/upload', upload.array('list'), (req, res) => { 
   if (!req.files) {
-    return res.status(400).json({ error: '이미지를 업로드해주세요.' });
+    return res.status(400).send({ error: '이미지를 업로드해주세요.' });
   }  
   const imagelist = [];
   for(let i = 0; i < req.files.length; i++) {
@@ -36,7 +36,7 @@ router.post('/upload', upload.array('list'), (req, res) => {
       img: req.files[i].filename
     })
   } 
-  return res.json({ success: true, imagePath: imagelist });
+  return res.send({ success: true, imagePath: imagelist });
 });  
 
 // 내 정보 - 리스트
@@ -56,6 +56,8 @@ router.get('/:name', (req, res) => {
               list_image: JSON.parse(JSON.stringify(item.list_image))
             });
           })   
+
+          console.log(data,"data")
 
           return res.send({ code: 200, result: data, message: 'List Profile is successfully' });
         } else {

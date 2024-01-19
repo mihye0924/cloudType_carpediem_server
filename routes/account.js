@@ -27,9 +27,9 @@ const upload = multer({
 // 계정,메인(프로필편집) - 이미지 업로드
 router.post('/upload', upload.single('profile'), (req, res) => { 
   if (!req.file) {
-    return res.status(400).json({ error: '이미지를 업로드해주세요.' });
+    return res.status(400).send({ error: '이미지를 업로드해주세요.' });
   }  
-  return res.json({ success: true, imagePath: req.file.filename });
+  return res.send({ success: true, imagePath: req.file.filename });
 });  
 
 // 계정 - 찾기

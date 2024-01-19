@@ -38,7 +38,7 @@ router.get('/:id',  (req, res) => {
   try {
      pool.getConnection(function (err, conn) {
       if(err) throw err;
-       conn.query(sql.getAccountList, [user_id], function (error, results){
+       conn.query(sql.getAccount, [user_id], function (error, results){
         if(error) throw error;   
         if(results.length > 0){
           return res.send({ code: 200, result: results, message: 'Account is successfully'})
@@ -59,7 +59,7 @@ router.get('/checkName/:name', (req, res) => {
   try{
     pool.getConnection(function(err, conn){
       if(err) throw err;
-      conn.query(sql.accountNameCheck, [user_name], function(error, results) {
+      conn.query(sql.accountCheck, [user_name], function(error, results) {
         
         if(error) throw error;      
         if(results.length < 1) {
@@ -82,7 +82,7 @@ router.post('/create',  (req, res) => {
   try {
     pool.getConnection(function (err, conn) {
       if (err) throw err;
-      conn.query(sql.setAccountCreate, values, function(error, results) {
+      conn.query(sql.accountCreate, values, function(error, results) {
         if (error) throw error; 
         if (results) {
           return res.send({ code: 200, results:results, message: 'Account Create is successfully' });

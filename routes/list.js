@@ -41,36 +41,14 @@ router.post('/upload', upload.array('list'), (req, res) => {
   return res.json({ success: true, imagePath: imagelist });
 });  
 
- 
-// 내 정보 - 사진 데이터 
-router.get('/', (req, res) => { 
-  const { account_name } = req.headers;  
+// 내 정보 - 리스트
+router.get('/:name', (req, res) => { 
+  const account_name = req.params.name;    
   try {
     pool.getConnection(function (err, conn) {
       if(err) throw err;
-      conn.query(sql.getMyList, [account_name], function (error, results){
-        if(error) throw error;     
-        if(results.length > 0){  
-          return res.send({ code: 200, result: results, message: 'List is successfully'})
-        }else{
-          return res.send({ code: 401, message: 'List is failed'})
-        }
-      })
-    })
-  }catch(error){
-    logger.info("List Server Error💥", error);
-    logger.error("List Server Error:", error);
-  } 
-})
-
-// 내 정보 - 프로필 데이터 
-router.get('/profile/:name', (req, res) => { 
-  const account_name = req.params.name;   
-  try {
-    pool.getConnection(function (err, conn) {
-      if(err) throw err;
-      conn.query(sql.getMyProfile, [account_name], function (error, results){
-        if(error) throw error;     
+      conn.query(sql.listData, [account_name], function (error, results){ 
+        if(error) throw error;       
         if(results.length > 0){ 
           return res.send({ code: 200, result: results, message: 'List Profile is successfully'})
         }else{
@@ -81,6 +59,53 @@ router.get('/profile/:name', (req, res) => {
   }catch(error){
     logger.info("List Profile Server Error💥", error);
     logger.error("List Profile Server Error:", error);
+  } 
+})
+ 
+
+// 내 정보 - 사진, 이름, 소개, 링크 등등
+router.get('/profile/:name', (req, res) => { 
+  const account_name = req.params.name;    
+  try {
+    pool.getConnection(function (err, conn) {
+      if(err) throw err;
+      conn.query(sql.listProfile, [account_name], function (error, results){ 
+        console.log(results,"results")
+        if(error) throw error;       
+        if(results.length > 0){ 
+          return res.send({ code: 200, result: results, message: 'List Profile is successfully'})
+        }else{
+          return res.send({ code: 401, message: 'List Profile is failed'})
+        }
+      })
+    })
+  }catch(error){
+    logger.info("List Profile Server Error💥", error);
+    logger.error("List Profile Server Error:", error);
+  } 
+})
+ 
+// 글쓰기 
+router.post('/create', (req, res) => {
+  const {account_name, list_image, list_content} = req.body;  
+  const values = [account_name, list_image, list_content]
+
+  try {
+    pool.getConnection(function (err, conn) {
+      if(err) throw err;
+      conn.query(sql.listCreate, values, function (error, results){ 
+        console.log(results,"rer") 
+        if(error) throw error;     
+        if(results){ 
+          return res.send({ code: 200, result: results, message: 'List Write is successfully'})
+        }else{
+          return res.send({ code: 401, message: 'List Write is failed'})
+        }
+      })
+    })
+  }catch(error){
+    logger.info("List Write Server Error💥", error);
+    logger.error("List Write Server Error:", error);
   } 
 })
 

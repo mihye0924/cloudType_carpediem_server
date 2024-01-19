@@ -35,15 +35,13 @@ router.post('/upload', upload.array('list'), (req, res) => {
       id: i+1,
       img: req.files[i].filename
     })
-  }
-  console.log(imagelist,"imagelist")
+  } 
   return res.json({ success: true, imagePath: imagelist });
 });  
 
 // 내 정보 - 리스트
-router.get('/:name', (req, res) => { 
+router.get('/:name', (req, res, next) => { 
   const account_name = req.params.name;    
-  console.log(account_name,"account_name")
   try {
     pool.getConnection(function (err, conn) {
       if(err) throw err;
@@ -51,6 +49,7 @@ router.get('/:name', (req, res) => {
         console.log(results,"results")
         if(error) throw error;       
         if(results.length > 0){ 
+          next()
           return res.send({ code: 200, result: results, message: 'List Profile is successfully'})
         }else{
           return res.send({ code: 401, message: 'List Profile is failed'})
@@ -65,7 +64,7 @@ router.get('/:name', (req, res) => {
  
 
 // 내 정보 - 사진, 이름, 소개, 링크 등등
-router.get('/profile/:name', (req, res) => { 
+router.get('/profile/:name', (req, res, next) => { 
   const account_name = req.params.name;    
   try {
     pool.getConnection(function (err, conn) {
@@ -73,6 +72,7 @@ router.get('/profile/:name', (req, res) => {
       conn.query(sql.listProfile, [account_name], function (error, results){ 
         if(error) throw error;       
         if(results.length > 0){ 
+          next()
           return res.send({ code: 200, result: results, message: 'List Profile is successfully'})
         }else{
           return res.send({ code: 401, message: 'List Profile is failed'})

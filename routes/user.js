@@ -13,8 +13,7 @@ const pool = mysql.createPool(connection);
 
 // 로그인
 router.post('/login', (req, res) => {    
-  const {user_id, user_pw} = req.body;  
-  console.log(user_id, user_pw, "로그인테스트222")
+  const {user_id, user_pw} = req.body;   
 
   const user = { 
     isAuth: true,
@@ -26,7 +25,6 @@ router.post('/login', (req, res) => {
       if(err) throw err;
       conn.query(sql.login, [user_id], function(error, results) { 
         if(error) throw error;    
-         console.log(user_id, user_pw, results,"로그인테스트")
         if(results.length > 0 && results[0].user_id) {  
           const pwCheck = bcrypt.compareSync(user_pw, results[0].user_pw);  
           if(pwCheck){  
@@ -34,8 +32,7 @@ router.post('/login', (req, res) => {
             const refreshToken = generateRefreshToken(user); 
             
               res.cookie('user', refreshToken, { httpOnly: true, sameSite: 'None', secure: true });
-    
-              res.send({
+              return res.send({
                 code: 200,
                 message: '토큰이 생성되었습니다.',
                 isAuth: user.isAuth,
@@ -50,6 +47,7 @@ router.post('/login', (req, res) => {
           return res.send({ code: 401, message: "login id is not found"})
         }
       }) 
+      conn.release();
     })
   }catch(error){
     logger.info("Login Server Error💥", error);
@@ -72,6 +70,7 @@ router.get('/:id', (req, res) => {
           return res.send({ code: 401, message: 'join id check failed' })
         }
       })
+      conn.release();
     })
   }catch(error){
     logger.info("IdCheck Server Error💥", error);
@@ -98,6 +97,7 @@ router.post('/join', (req, res) => {
           return res.send({ code: 401, message: 'join is failed' });
         }
       });
+      conn.release();
     })
   }catch(error){
     logger.info("Join Server Error💥", error);

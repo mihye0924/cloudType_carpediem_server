@@ -46,6 +46,7 @@ router.get('/:id',  (req, res) => {
           return res.send({ code: 401, message: 'Account is failed'})
         }
       })
+      conn.release();
     })
   }catch(error){
     logger.info("Account Server Error💥", error);
@@ -68,6 +69,7 @@ router.get('/checkName/:name', (req, res) => {
           return res.send({ code: 401, message: 'Name Check is failed'})
         } 
       })
+      conn.release();
     })
   }catch(error){
     logger.info("Name Check Server Error💥", error);
@@ -90,6 +92,7 @@ router.post('/create',  (req, res) => {
           return res.send({ code: 401, message: 'Account Create is failed' });
         }
       });
+      conn.release();
     })
   }catch(error){
     logger.info("Account Create Server Error💥", error);
@@ -112,6 +115,7 @@ router.delete('/delete', (req, res) => {
           return res.send({ code: 401, message: 'Account Delete Create is failed' });
         }
       });
+      conn.release();
     })
   }catch(error){
     logger.info("Account Delete Create Server Error💥", error);
@@ -134,6 +138,7 @@ router.put('/edit', (req, res) => {
           return res.send({ code: 401, message: 'Account Delete Create is failed' });
         }
       });
+      conn.release();
     })
   }catch(error) {
     logger.info("Account Edit Create Server Error💥", error);

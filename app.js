@@ -17,7 +17,7 @@ const __dirname = path.resolve();
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true })); 
 app.use(cors({
-    origin: ["*","https://web-cloudtype-carpediem-client-16yzlb2alrh3cimr.sel5.cloudtype.app"], 
+    origin: ["http:/localhost:5173","https://web-cloudtype-carpediem-client-16yzlb2alrh3cimr.sel5.cloudtype.app"], 
     credentials: true, // 크로스 도메인 허용 
 }));  
 app.use(bodyParser.json({ limit:'50mb' }));

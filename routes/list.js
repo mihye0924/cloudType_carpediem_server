@@ -42,12 +42,11 @@ router.post('/upload', upload.array('list'), (req, res) => {
 // 내 정보 - 리스트
 router.get('/:name', (req, res) => { 
   const account_name = req.params.name;    
-  const data = []
+  const data = [] 
   try {
-    pool.getConnection(function (err, conn) {
+    pool.getConnection(function (err, conn) { 
       if(err) throw err;
       conn.query(sql.listData, [account_name], function (error, results) {
-        console.log(results,"results") 
         if (error) throw error;
         if (results.length > 0) {   
           
@@ -62,6 +61,7 @@ router.get('/:name', (req, res) => {
           return res.send({ code: 401, message: 'List Profile is failed' });
         }
       })
+      conn.release();
     })
   }catch(error){
     logger.info("List Profile Server Error💥", error);
@@ -84,6 +84,7 @@ router.get('/profile/:name', (req, res) => {
           return res.send({ code: 401, message: 'List Profile is failed'})
         }
       })
+      conn.release();
     })
   }catch(error){
     logger.info("List Profile Server Error💥", error);
@@ -107,6 +108,7 @@ router.post('/create', (req, res) => {
           return res.send({ code: 401, message: 'List Write is failed'})
         }
       })
+      conn.release();
     })
   }catch(error){
     logger.info("List Write Server Error💥", error);

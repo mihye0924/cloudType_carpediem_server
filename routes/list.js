@@ -48,8 +48,7 @@ router.get('/:name', (req, res) => {
       if(err) throw err;
       conn.query(sql.listData, [account_name], function (error, results) {
         if (error) throw error;
-        if (results.length > 0) {   
-          console.log(results,"results")
+        if (results.length > 0) {    
           
           results.forEach(( item ) => {    
           return data.push({

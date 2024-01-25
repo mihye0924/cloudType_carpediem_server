@@ -12,6 +12,7 @@ const __dirname = path.resolve();
 const router = express.Router();
 const pool = mysql.createPool(connection); 
 
+// 게시글 - 이미지 저장
 const upload = multer({
   storage: multer.diskStorage({ 
       destination(req, file, cb) { // 저장 위치
@@ -39,7 +40,7 @@ router.post('/upload', upload.array('list'), (req, res) => {
   return res.send({ success: true, imagePath: imagelist });
 });  
 
-// 내 정보 - 리스트
+// 내 정보 - 리스트 가져오기
 router.get('/:name', (req, res) => { 
   const account_name = req.params.name;    
   const data = [] 
@@ -50,27 +51,26 @@ router.get('/:name', (req, res) => {
         if (error) throw error;
         if (results.length > 0) {    
           
-          results.forEach(( item ) => {    
-          return data.push({
+          results.forEach(( item ) => {  
+            data.push({
               ...item,
               list_image: JSON.parse(item.list_image)
-            });
-          })     
+            })
+          })      
           return res.send({ code: 200, result: data, message: 'List Profile is successfully' });
         } else {
           return res.send({ code: 401, message: 'List Profile is failed' });
         }
       })
       conn.release();
-    })
+    }) 
   }catch(error){
     logger.info("List Profile Server Error💥", error);
     logger.error("List Profile Server Error:", error);
   } 
 })
- 
-
-// 내 정보 - 사진, 이름, 소개, 링크 등등
+  
+// 내 정보 - 프로필 가져오기(사진, 이름, 소개, 링크) 등등
 router.get('/profile/:name', (req, res) => { 
   const account_name = req.params.name;    
   try {
@@ -92,7 +92,7 @@ router.get('/profile/:name', (req, res) => {
   } 
 })
  
-// 글쓰기 
+// 게시글 - 글쓰기 
 router.post('/create', (req, res) => {
   const {account_name, list_image, list_content} = req.body;  
   const values = [account_name, list_image, list_content]
@@ -103,16 +103,133 @@ router.post('/create', (req, res) => {
       conn.query(sql.listCreate, values, function (error, results){ 
         if(error) throw error;     
         if(results){ 
-          return res.send({ code: 200, result: results, message: 'List Write is successfully'})
+          return res.send({ code: 200, message: 'List Create is successfully'})
         }else{
-          return res.send({ code: 401, message: 'List Write is failed'})
+          return res.send({ code: 401, message: 'List Create is failed'})
         }
       })
       conn.release();
     })
   }catch(error){
-    logger.info("List Write Server Error💥", error);
-    logger.error("List Write Server Error:", error);
+    logger.info("List Create Server Error💥", error);
+    logger.error("List Create Server Error:", error);
+  } 
+})
+
+// 게시글 - 글삭제
+router.delete('/:id/:num', (req, res) => { 
+  const values = [req.params.id, req.params.num]
+  
+  try {
+    pool.getConnection(function (err, conn) {
+      if(err) throw err;
+      conn.query(sql.listDelete, values, function (error, results){ 
+        if(error) throw error;     
+        if(results){ 
+          return res.send({ code: 200, message: 'List Delete is successfully'})
+        }else{
+          return res.send({ code: 401, message: 'List Delete is failed'})
+        }
+      })
+      conn.release();
+    })
+  }catch(error){
+    logger.info("List Delete Server Error💥", error);
+    logger.error("List Delete Server Error:", error);
+  } 
+})
+
+// 글 수정
+router.put('/update', (req, res) => { 
+  const { account_name, list_no, list_content } = req.body
+  const values = [list_content, list_no, account_name]
+  
+  try {
+    pool.getConnection(function (err, conn) {
+      if(err) throw err;
+      conn.query(sql.listUpdate, values, function (error, results){ 
+        if(error) throw error;     
+        if(results){ 
+          return res.send({ code: 200, result: results, message: 'List Delete is successfully'})
+        }else{
+          return res.send({ code: 401, message: 'List Delete is failed'})
+        }
+      })
+      conn.release();
+    })
+  }catch(error){
+    logger.info("List Delete Server Error💥", error);
+    logger.error("List Delete Server Error:", error);
+  } 
+})
+  
+  
+// 게시글 - 좋아요 가져오기
+router.get('/likes/:id', (req, res) => {
+  const account_name = req.params.id;  
+
+  try {
+    pool.getConnection(function (err, conn) {
+      if(err) throw err;
+      conn.query(sql.listLkiesData, [account_name], function (error, results){ 
+        if(error) throw error;     
+        if(results){  
+          return res.send({ code: 200, results: results, message: 'List Good is successfully'})
+        }else{
+          return res.send({ code: 401, message: 'List Good is failed'})
+        }
+      })
+      conn.release();
+    })
+  }catch(error){
+    logger.info("List Good Server Error💥", error);
+    logger.error("List Good Server Error:", error);
+  } 
+})
+
+// 게시글 - 좋아요
+router.post('/likes', (req, res) => {
+  const {list_no, account_name} = req.body
+  const values = [account_name, list_no]
+  try {
+    pool.getConnection(function (err, conn) {
+      if(err) throw err;
+      conn.query(sql.listLikes, values, function (error, results){ 
+        if(error) throw error;     
+        if(results){  
+          return res.send({ code: 200, message: 'List Good is successfully'})
+        }else{
+          return res.send({ code: 401, message: 'List Good is failed'})
+        }
+      })
+      conn.release();
+    })
+  }catch(error){
+    logger.info("List Good Server Error💥", error);
+    logger.error("List Good Server Error:", error);
+  } 
+})
+
+// 게시글 - 좋아요 삭제
+router.delete('/likes/:id/:num', (req, res) => { 
+  const values = [req.params.id, req.params.num] 
+
+  try {
+    pool.getConnection(function (err, conn) {
+      if(err) throw err;
+      conn.query(sql.listLikesRemove, values, function (error, results){ 
+        if(error) throw error;     
+        if(results){ 
+          return res.send({ code: 200, message: 'List Good Remove is successfully'})
+        }else{
+          return res.send({ code: 401, message: 'List Good Remove is failed'})
+        }
+      })
+      conn.release();
+    })
+  }catch(error){
+    logger.info("List Good Remove Server Error💥", error);
+    logger.error("List Good Remove Server Error:", error);
   } 
 })
 

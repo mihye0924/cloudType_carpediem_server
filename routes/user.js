@@ -247,5 +247,10 @@ router.post('/pwEdit', (req, res) => {
   } 
 })
 
+// 로그아웃
+router.post('/logout', (req, res) => {  
+  res.clearCookie('user', { path: '/' });
+  res.send({ code: 200, message: 'Successfully logged out'}) 
+})
 
 export default router;
